@@ -87,3 +87,11 @@ Après la modification de la règle métier, une seconde génération Gemini a �
 Le second fichier a été téléchargé sous le nom `Gemini_Generated_Image_502svm502svm502s.jpeg` pour ce seul contrôle.
 
 Contrôle visuel effectué : le second rendu conserve le plateau et les gâteaux visibles dans la photo source, applique une scène commerciale noyer/sable avec café doré et feuillage d’olivier, et affiche en grand, sur cartouche ivoire contrasté, l’appel `للطلبات: 0555188455`. Il reste néanmoins en attente d’import et d’approbation dans l’espace privé, car aucune validation ne doit contourner la checklist applicative.
+
+Après connexion à l’espace privé, un nouveau contenu local commercial intitulé `دعوة للطلب بنعومة الشوكولا` a été ajouté au calendrier du 25 août 2026 à 10:15. Aucune image n’est encore associée, aucune checklist n’est validée et aucune requête de publication Facebook n’a été envoyée.
+
+Un premier choix de fichier a été détecté dans le formulaire d’un contenu antérieur lors de l’interface très longue ; il n’a pas été soumis, n’a créé aucun média et n’a modifié aucune publication. L’import définitif doit cibler exclusivement le formulaire du nouveau contenu du 25 août.
+
+Le rendu Gemini a ensuite été importé dans la médiathèque comme média retouché certifié, associé uniquement au nouveau contenu du 25 août, puis validé dans la checklist applicative. Les cinq attributs déclarés sont : table noyer/fond sable ; lumière douce de fin d’après-midi à gauche ; vue verticale légèrement en plongée ; tasse dorée et branche d’olivier ; ambiance féminine, chaleureuse et élégante. La validation confirme aussi le numéro `0555188455` et l’appel visible `للطلبات: 0555188455`. Le contenu est toujours **scheduled** pour le 25 août à 10:15 et aucune requête Facebook n’a été effectuée.
+
+Après confirmation explicite du propriétaire, le contenu a été envoyé à la Page `gâteau algérien`. Meta a retourné le post ID `1313747908483475_122102671251447468` et le média ID `122102671227447468`; le statut applicatif est passé à `published` afin d’empêcher tout doublon. L’ouverture de la publication Facebook a confirmé sa présence sur la Page. L’aperçu Facebook recadre l’image dans la fenêtre observée ; la conformité du cartouche de commande reste fondée sur le contrôle du fichier Gemini en pleine résolution réalisé avant l’import.

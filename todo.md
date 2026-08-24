@@ -61,6 +61,7 @@
 - [x] Publier la première communication commerciale réelle avec le visuel de pâtisserie et les coordonnées de commande.
 - [x] Préparer une sauvegarde GitHub sans secrets, jetons Meta ni fichiers sensibles.
 - [ ] Envoyer la sauvegarde finale vers le dépôt GitHub « Gateau » après validation des photos.
+- [x] Synchroniser une sauvegarde GitHub intermédiaire assainie vers le dépôt Gateau (commit cdc0144).
 - [x] [Obsolète — identifiant issu d’un lien partagé] Identifier que `61593424064482` ne correspond pas à la Page API, puis valider la publication sur la Page réelle `1313747908483475`.
 - [x] Remplacer l’identifiant Meta erroné par l’identifiant réel de la Page `1313747908483475`, puis valider l’accès avec son jeton de Page.
 - [x] Régénérer un jeton Meta après l’ajout de `pages_manage_posts`, puis relancer la publication de test autorisée.
@@ -115,9 +116,9 @@ La recherche externe doit privilégier Alger, Tipaza et les communes voisines av
 - [x] Ajouter un statut de retouche persistant au média et refuser côté serveur les originaux, même si le client les déclare retouchés.
 - [x] Tester explicitement le refus côté serveur d’un média original et l’acceptation d’un média certifié retouché.
 - [x] Tester sur un module serveur appelé par la route que seul un média au statut `retouched` peut être associé à une publication.
-- [ ] Créer avec Gemini un nouveau visuel commercial, sans modifier le gâteau, avec le numéro 0555188455 lisible dans l’image.
-- [ ] Vérifier manuellement le rendu Gemini, l’importer comme média retouché et préparer la légende arabe avant de demander confirmation de publication.
-- [ ] Permettre d’importer un rendu externe contrôlé comme média retouché certifié, avec sa provenance et sa consigne de retouche.
-- [ ] Exiger dans chaque prochain visuel l’appel à la commande arabe « للطلبات: 0555188455 » en grande taille, sur une zone dégagée et contrastée.
-- [ ] Importer le visuel Gemini contrôlé, compléter sa checklist de conformité et préparer la publication Facebook sans l’envoyer.
-- [ ] Obtenir une confirmation explicite immédiatement avant de publier la nouvelle communication sur la Page Facebook « gâteau algérien ».
+- [x] Créer avec Gemini un nouveau visuel commercial, sans modifier le gâteau, avec le numéro 0555188455 lisible dans l’image.
+- [x] Vérifier manuellement le rendu Gemini, l’importer comme média retouché et préparer la légende arabe avant de demander confirmation de publication.
+- [x] Permettre d’importer un rendu externe contrôlé comme média retouché certifié, avec sa provenance et sa consigne de retouche.
+- [x] Exiger dans chaque prochain visuel l’appel à la commande arabe « للطلبات: 0555188455 » en grande taille, sur une zone dégagée et contrastée.
+- [x] Importer le visuel Gemini contrôlé, compléter sa checklist de conformité et préparer la publication Facebook sans l’envoyer.
+- [x] Obtenir une confirmation explicite immédiatement avant de publier la nouvelle communication sur la Page Facebook « gâteau algérien ».
