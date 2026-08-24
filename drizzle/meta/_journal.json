@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1787521712364,
+      "tag": "0000_lyrical_echo",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1787521945857,
+      "tag": "0001_breezy_roxanne_simpson",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1787532993087,
+      "tag": "0002_keen_midnight",
+      "breakpoints": true
+    }
+  ]
+}

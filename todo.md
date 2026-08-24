@@ -1,0 +1,90 @@
+# Project TODO
+
+- [x] Mettre en place l’accès privé à la plateforme et une navigation de tableau de bord.
+- [x] Modéliser l’identité de la pâtisserie, les produits, prix, offres, zones de livraison et informations de commande configurables.
+- [x] Modéliser les créneaux de publication, le calendrier éditorial et la limite de cinq publications par jour.
+- [x] Créer le tableau de bord élégant de pilotage adapté à une pâtisserie algérienne.
+- [x] Créer les écrans Produits, Calendrier, Contenus, Médias, Paramètres et Journal de publication.
+- [x] Intégrer la génération de légendes promotionnelles localisées, avec appels à l’action, hashtags et données de commande.
+- [x] Intégrer la création et la conservation de visuels produits et promotionnels.
+- [x] Ajouter la connexion sécurisée à l’API Meta, avec configuration des secrets côté serveur.
+- [x] Exécuter automatiquement la préparation et la publication aux créneaux définis, sans navigateur ouvert.
+- [x] Reconfigurer la limite métier et le calendrier à dix publications maximum par jour.
+- [x] Faire respecter le plafond configuré de dix publications lors de la création manuelle d’un contenu.
+- [x] Valider le nouveau jeton d’accès de la Page Facebook avant de reprendre les envois automatiques.
+- [x] Enregistrer les contenus, statuts, identifiants Meta, erreurs et historique de publication.
+- [x] Ajouter un interrupteur d’arrêt immédiat de l’automatisation et des garde-fous anti-surpublication.
+- [x] Écrire et exécuter les tests unitaires couvrant les règles métier critiques.
+- [x] Vérifier l’interface sur ordinateur et mobile, puis créer le point de restauration final.
+- [x] Ajouter une mise en scène photographique assistée par IA qui préserve intégralement les gâteaux fournis par la pâtisserie.
+- [x] Permettre de choisir le décor, l’éclairage, le cadrage et les accessoires sans modifier le produit photographié.
+- [x] Publier le projet, vérifier la Page Meta dans Réglages, puis activer l’automatisation depuis la vue d’ensemble.
+- [x] Configurer les créneaux de publication automatique uniquement pour la Page Facebook « gâteau algérien ».
+- [x] Activer la programmation serveur sans navigateur ouvert et vérifier le calendrier ainsi que le journal d’exécution.
+- [x] Confirmer la Page Facebook connectée et l’automatisation active dans l’interface privée.
+- [x] Vérifier et documenter exactement dix créneaux actifs après reconfiguration.
+- [x] Afficher uniquement les créneaux actifs dans le tableau de bord et le calendrier.
+- [x] Conserver une preuve de l’interface indiquant la Page « gâteau algérien » et l’automatisation active.
+- [x] Documenter la liste exacte des dix créneaux actifs avec leur heure et leur libellé.
+- [x] Produire une vérification textuelle de la Page « gâteau algérien » et de l’automatisation active.
+- [ ] Vérifier un cycle Heartbeat qui traite au moins une publication avec la configuration actuelle.
+- [x] Auditer les contenus, créneaux et garde-fous afin d’optimiser le workflow quotidien.
+- [x] Distinguer ou masquer les contenus annulés dans les vues opérationnelles du calendrier et des contenus.
+- [x] Corriger le compteur du tableau de bord pour exclure les publications annulées du plafond quotidien.
+- [x] Générer automatiquement une publication localisée pour chaque créneau quotidien, avant son envoi sur la Page Facebook.
+- [x] Tester les règles de sélection et de non-duplication des publications créées par les créneaux automatiques.
+- [x] Tester la création d’une publication automatiquement déclenchée par un créneau dû.
+- [x] Tester l’absence de doublon lors de deux exécutions du même créneau automatique.
+- [x] Tester la sélection d’un produit ou d’une offre selon le type de contenu du créneau.
+- [x] Finaliser le traitement non destructif des photos de gâteaux avant la sauvegarde finale.
+- [x] Créer sept mises en scène photographiques professionnelles sans modifier les gâteaux transmis.
+- [x] Ajouter l’appel à la commande « Commandes : 0671 00 00 00 » de manière élégante aux sept rendus finaux.
+- [x] Traiter la photo restante `images(3).jpeg` avec une mise en scène non destructive et les coordonnées de commande.
+- [x] Vérifier et consigner que chacun des sept rendus préserve le gâteau d’origine et affiche le numéro de commande demandé.
+- [ ] Remplacer l’ancien numéro par « 0555 18 84 55 » sur les sept rendus avec une hiérarchie plus visible.
+- [ ] Utiliser le nouveau numéro de commande dans toutes les prochaines publications Facebook automatiques.
+- [ ] Adapter les visuels, légendes et appels à l’action à un public féminin arabophone.
+- [x] Aligner l’identité de l’atelier sur « Douceur Studio » et définir l’arabe comme langue éditoriale principale.
+- [x] Permettre à l’écran Paramètres d’enregistrer durablement l’arabe comme langue éditoriale principale.
+- [ ] Générer et publier les prochaines légendes promotionnelles uniquement en arabe.
+- [x] Trier les nouvelles photos Messenger et préparer une sélection de contenus arabes à programmer.
+- [x] Préparer dix publications arabes pour aujourd’hui à partir des nouvelles photos, avec le contact 0555 18 84 55.
+- [x] Rechercher et qualifier des Pages et communautés Facebook pertinentes pour une diffusion autorisée.
+- [ ] Constituer un répertoire qualifié de 100 Pages et groupes Facebook pertinents, avec leur statut d’autorisation.
+- [ ] Obtenir une autorisation explicite avant toute publication vers une Page ou un groupe Facebook tiers.
+- [x] Préparer trois nouvelles publications en arabe à partir des photos images(7), images(6) et images(5), avec le contact 0555 18 84 55.
+- [x] Utiliser une mise en scène photographique distincte pour chaque nouvelle publication sans modifier les gâteaux.
+- [x] Vérifier visuellement les trois nouveaux rendus arabes et consigner la lisibilité du numéro 0555 18 84 55.
+- [x] Confirmer visuellement que chaque nouvelle mise en scène est différente et que les pâtisseries restent intactes.
+- [x] Créer et vérifier une planche de contrôle visuel des trois rendus arabes finaux.
+- [ ] Adapter les visuels, légendes et appels à l’action à un public féminin arabophone.
+- [x] Publier la première communication commerciale réelle avec le visuel de pâtisserie et les coordonnées de commande.
+- [ ] Préparer une sauvegarde GitHub sans secrets, jetons Meta ni fichiers sensibles.
+- [ ] Envoyer la sauvegarde finale vers le dépôt GitHub « Gateau » après validation des photos.
+- [x] [Obsolète — identifiant issu d’un lien partagé] Identifier que `61593424064482` ne correspond pas à la Page API, puis valider la publication sur la Page réelle `1313747908483475`.
+- [x] Remplacer l’identifiant Meta erroné par l’identifiant réel de la Page `1313747908483475`, puis valider l’accès avec son jeton de Page.
+- [x] Régénérer un jeton Meta après l’ajout de `pages_manage_posts`, puis relancer la publication de test autorisée.
+- [x] Inspecter les permissions effectives du jeton Meta et corriger la configuration d’application qui bloque la publication.
+- [x] Utiliser l’URI de redirection validée de Graph API Explorer pour demander `pages_manage_posts`, générer le jeton de Page et publier le test autorisé.
+- [x] Créer un écran Contenus dédié, indépendant du calendrier, pour gérer les publications et leurs statuts.
+- [x] Créer le point de restauration final après la dernière vérification visuelle.
+- [x] Prendre une capture de l’écran Contenus et relancer les vérifications de fin de projet.
+- [x] Prioriser les Pages et groupes autour d’Alger, Tipaza, Blida et Boumerdès dans le répertoire de diffusion.
+- [ ] Atteindre 100 espaces qualifiés avec statut d’autorisation et ne programmer aucun partage sans accord.
+- [ ] Finaliser la mise à jour des sept anciens rendus avec le numéro 0555 18 84 55 lorsque la génération d’images sera disponible.
+- [ ] Valider au moins une publication réellement traitée par Heartbeat avec le nouveau jeton.
+- [ ] Préparer une sauvegarde GitHub sans secrets, jetons Meta ni fichiers sensibles.
+- [ ] Envoyer la sauvegarde finale vers le dépôt GitHub « Gateau » après validation des photos.
+- [ ] Générer et publier les prochaines légendes promotionnelles uniquement en arabe.
+- [ ] Utiliser le nouveau numéro de commande dans toutes les prochaines publications Facebook automatiques.
+- [ ] Adapter les visuels, légendes et appels à l’action à un public féminin arabophone.
+- [ ] Obtenir une autorisation explicite avant toute publication vers une Page ou un groupe Facebook tiers.
+- [ ] Produire une liste de 100 espaces Facebook centrés sur Alger et Tipaza, sans partage automatique non autorisé.
+
+### Historique — priorisation géographique
+
+La recherche externe doit privilégier Alger, Tipaza et les communes voisines avant les autres wilayas.
+- [ ] Ajouter et qualifier les Pages et groupes Facebook de Fouka et Koléa dans le répertoire local.
+- [x] Structurer les 100 liens Facebook dédoublonnés avec URL, zone détectée, type et statut d’autorisation explicite.
+- [ ] Vérifier manuellement que chaque entrée locale est bien située autour d’Alger, Tipaza ou d’une commune prioritaire.
+- [ ] Compléter la sélection locale jusqu’à 100 espaces réellement centrés Alger–Tipaza sans inventer d’audience ni d’URL.

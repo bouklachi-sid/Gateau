@@ -1,0 +1,1 @@
+ALTER TABLE `automation_settings` MODIFY COLUMN `maxPostsPerDay` int NOT NULL DEFAULT 10;
