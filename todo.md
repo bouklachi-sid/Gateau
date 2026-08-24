@@ -42,13 +42,13 @@
 - [x] Traiter la photo restante `images(3).jpeg` avec une mise en scène non destructive et les coordonnées de commande.
 - [x] Vérifier et consigner que chacun des sept rendus préserve le gâteau d’origine et affiche le numéro de commande demandé.
 - [ ] Remplacer l’ancien numéro par « 0555 18 84 55 » sur les sept rendus avec une hiérarchie plus visible.
-- [ ] Utiliser le nouveau numéro de commande dans toutes les prochaines publications Facebook automatiques.
-- [ ] Adapter les visuels, légendes et appels à l’action à un public féminin arabophone.
+- [x] Utiliser le nouveau numéro de commande dans toutes les prochaines publications Facebook automatiques.
+- [x] Adapter les visuels, légendes et appels à l’action à un public féminin arabophone.
 - [x] Aligner l’identité de l’atelier sur « Douceur Studio » et définir l’arabe comme langue éditoriale principale.
 - [x] Permettre à l’écran Paramètres d’enregistrer durablement l’arabe comme langue éditoriale principale.
 - [ ] Générer et publier les prochaines légendes promotionnelles uniquement en arabe.
 - [x] Trier les nouvelles photos Messenger et préparer une sélection de contenus arabes à programmer.
-- [x] Préparer dix publications arabes pour aujourd’hui à partir des nouvelles photos, avec le contact 0555 18 84 55.
+- [x] Préparer dix publications arabes pour aujourd’hui à partir des nouvelles photos, avec le contact 0555 18 84 55. (Générées et planifiées ; publication effective encore à confirmer.)
 - [x] Rechercher et qualifier des Pages et communautés Facebook pertinentes pour une diffusion autorisée.
 - [ ] Constituer un répertoire qualifié de 100 Pages et groupes Facebook pertinents, avec leur statut d’autorisation.
 - [ ] Obtenir une autorisation explicite avant toute publication vers une Page ou un groupe Facebook tiers.
@@ -57,9 +57,9 @@
 - [x] Vérifier visuellement les trois nouveaux rendus arabes et consigner la lisibilité du numéro 0555 18 84 55.
 - [x] Confirmer visuellement que chaque nouvelle mise en scène est différente et que les pâtisseries restent intactes.
 - [x] Créer et vérifier une planche de contrôle visuel des trois rendus arabes finaux.
-- [ ] Adapter les visuels, légendes et appels à l’action à un public féminin arabophone.
+- [x] Adapter les visuels, légendes et appels à l’action à un public féminin arabophone.
 - [x] Publier la première communication commerciale réelle avec le visuel de pâtisserie et les coordonnées de commande.
-- [ ] Préparer une sauvegarde GitHub sans secrets, jetons Meta ni fichiers sensibles.
+- [x] Préparer une sauvegarde GitHub sans secrets, jetons Meta ni fichiers sensibles.
 - [ ] Envoyer la sauvegarde finale vers le dépôt GitHub « Gateau » après validation des photos.
 - [x] [Obsolète — identifiant issu d’un lien partagé] Identifier que `61593424064482` ne correspond pas à la Page API, puis valider la publication sur la Page réelle `1313747908483475`.
 - [x] Remplacer l’identifiant Meta erroné par l’identifiant réel de la Page `1313747908483475`, puis valider l’accès avec son jeton de Page.
@@ -73,11 +73,11 @@
 - [ ] Atteindre 100 espaces qualifiés avec statut d’autorisation et ne programmer aucun partage sans accord.
 - [ ] Finaliser la mise à jour des sept anciens rendus avec le numéro 0555 18 84 55 lorsque la génération d’images sera disponible.
 - [ ] Valider au moins une publication réellement traitée par Heartbeat avec le nouveau jeton.
-- [ ] Préparer une sauvegarde GitHub sans secrets, jetons Meta ni fichiers sensibles.
+- [x] Préparer une sauvegarde GitHub sans secrets, jetons Meta ni fichiers sensibles.
 - [ ] Envoyer la sauvegarde finale vers le dépôt GitHub « Gateau » après validation des photos.
 - [ ] Générer et publier les prochaines légendes promotionnelles uniquement en arabe.
-- [ ] Utiliser le nouveau numéro de commande dans toutes les prochaines publications Facebook automatiques.
-- [ ] Adapter les visuels, légendes et appels à l’action à un public féminin arabophone.
+- [x] Utiliser le nouveau numéro de commande dans toutes les prochaines publications Facebook automatiques.
+- [x] Adapter les visuels, légendes et appels à l’action à un public féminin arabophone.
 - [ ] Obtenir une autorisation explicite avant toute publication vers une Page ou un groupe Facebook tiers.
 - [ ] Produire une liste de 100 espaces Facebook centrés sur Alger et Tipaza, sans partage automatique non autorisé.
 

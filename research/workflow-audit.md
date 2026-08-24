@@ -39,3 +39,7 @@ Les points à surveiller restent la première exécution qui traite effectivemen
 ## État du planificateur
 
 Les derniers cycles Heartbeat ont répondu avec le statut HTTP `200` et `processed: 0`. Ce résultat est attendu avant la première fenêtre de diffusion du jour : le premier contenu planifié est à 08:30, heure Algérie. La prochaine vérification doit confirmer le traitement d’un contenu à partir de ce créneau.
+
+## Contrôle Heartbeat — 24 août 2026, avant le premier créneau
+
+Le job `facebook-patisserie-1` est actif sur `/api/scheduled/publish-due-content` avec la fréquence `0 */5 * * * *`. La consultation de son historique montre 16 exécutions non manuelles réussies en HTTP 200, sans erreur, mais avec `{"ok":true,"processed":0}`. Cette observation confirme que le callback répond correctement ; elle ne constitue pas encore la preuve qu’un créneau de publication a été atteint. La validation `processed > 0`, d’un statut `published` et d’un `metaPostId` reste à effectuer après le premier créneau dû (08:30, heure d’Alger).
