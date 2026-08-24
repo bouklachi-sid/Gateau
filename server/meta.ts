@@ -8,6 +8,29 @@ function getPageAccessToken() {
   return token;
 }
 
+async function resolvePageAccessToken(pageId: string) {
+  const configuredToken = getPageAccessToken();
+  const identityResponse = await fetch(`${META_GRAPH_BASE}/me?fields=id&access_token=${encodeURIComponent(configuredToken)}`);
+  const identityRaw = await identityResponse.text();
+  if (!identityResponse.ok) {
+    throw new Error(`Meta a refusé la vérification du jeton (${identityResponse.status}) : ${identityRaw}`);
+  }
+  const identity = JSON.parse(identityRaw) as { id?: string };
+  if (identity.id === pageId) return configuredToken;
+
+  const accountsResponse = await fetch(`${META_GRAPH_BASE}/me/accounts?fields=id,access_token&access_token=${encodeURIComponent(configuredToken)}`);
+  const accountsRaw = await accountsResponse.text();
+  if (!accountsResponse.ok) {
+    throw new Error(`Meta a refusé la récupération du jeton de Page (${accountsResponse.status}) : ${accountsRaw}`);
+  }
+  const accounts = JSON.parse(accountsRaw) as { data?: Array<{ id?: string; access_token?: string }> };
+  const page = accounts.data?.find((candidate) => candidate.id === pageId);
+  if (!page?.access_token) {
+    throw new Error("Aucun jeton de publication n’a été trouvé pour la Page Facebook configurée.");
+  }
+  return page.access_token;
+}
+
 export function metaTokenIsConfigured() {
   return Boolean(process.env.META_PAGE_ACCESS_TOKEN?.trim());
 }
@@ -40,7 +63,7 @@ export async function publishToFacebook(input: {
   linkUrl?: string | null;
   imageUrl?: string | null;
 }) {
-  const token = getPageAccessToken();
+  const token = await resolvePageAccessToken(input.pageId);
   const body = new URLSearchParams();
   body.set("access_token", token);
   body.set("message", input.message);

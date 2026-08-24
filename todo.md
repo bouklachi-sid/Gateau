@@ -88,3 +88,8 @@ La recherche externe doit privilégier Alger, Tipaza et les communes voisines av
 - [x] Structurer les 100 liens Facebook dédoublonnés avec URL, zone détectée, type et statut d’autorisation explicite.
 - [ ] Vérifier manuellement que chaque entrée locale est bien située autour d’Alger, Tipaza ou d’une commune prioritaire.
 - [ ] Compléter la sélection locale jusqu’à 100 espaces réellement centrés Alger–Tipaza sans inventer d’audience ni d’URL.
+- [x] Activer le workflow avec les photos déjà chargées via le job Heartbeat propriétaire.
+- [ ] Vérifier qu’un créneau dû fait traiter au nouveau job au moins une publication avec photo (`processed > 0`, statut `published`, `metaPostId`).
+- [x] Identifier le modèle gratuit le plus performant pour retoucher les photos sans modifier les gâteaux : Qwen-Image-Edit-2511.
+- [x] Créer et publier un essai Facebook avec une photo déjà chargée, puis vérifier son identifiant Meta.
+- [x] Résoudre dynamiquement le jeton de Page Meta avant chaque publication afin d’éviter l’erreur `publish_actions` du jeton utilisateur.

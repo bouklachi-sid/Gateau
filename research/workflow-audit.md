@@ -43,3 +43,15 @@ Les derniers cycles Heartbeat ont répondu avec le statut HTTP `200` et `process
 ## Contrôle Heartbeat — 24 août 2026, avant le premier créneau
 
 Le job `facebook-patisserie-1` est actif sur `/api/scheduled/publish-due-content` avec la fréquence `0 */5 * * * *`. La consultation de son historique montre 16 exécutions non manuelles réussies en HTTP 200, sans erreur, mais avec `{"ok":true,"processed":0}`. Cette observation confirme que le callback répond correctement ; elle ne constitue pas encore la preuve qu’un créneau de publication a été atteint. La validation `processed > 0`, d’un statut `published` et d’un `metaPostId` reste à effectuer après le premier créneau dû (08:30, heure d’Alger). Une lecture de contrôle en base confirme `enabled=1`, `limit=10`, `task=3DCrGL6y7NRS46RvYZsayG` et `stopped=null` ; la mention « en pause » observée dans une capture de chargement n’est donc pas l’état persistant du workflow.
+
+## Réparation de l’authentification Heartbeat
+
+Le job initial, lié à un cookie utilisateur, a commencé à répondre HTTP 403 avec `permission error for cron cookie`. Il est désormais désactivé. Le workflow est relié au job propriétaire `facebook-patisserie-owner-1` (`task_uid` `5jg4zEk5QqkKfiqL8HhENb`), activé à la cadence de cinq minutes. Son premier cycle a répondu HTTP 200 avec `{"ok":true,"processed":0}`, ce qui confirme le rétablissement de l’authentification et l’absence de contenu dû avant le premier créneau.
+
+## Essai de publication avec photo — validé
+
+Le visuel chargé `post-01_e8b84c07.jpeg` et sa légende arabe ont été publiés avec succès sur la Page `gâteau algérien`. Meta a retourné l’identifiant de publication `1313747908483475_122102618601447468` et l’identifiant média `122102618565447468`. Le contenu interne `30001` est enregistré au statut `published` avec cet identifiant, ce qui empêche sa republication automatique à 08:30.
+
+La cause du premier refus HTTP 403 était l’utilisation directe d’un jeton utilisateur vers l’endpoint de publication. La logique applicative résout désormais le jeton spécifique de la Page à partir de `/me/accounts` avant chaque envoi ; les tests automatisés associés sont réussis.
+
+La vérification visuelle sur Facebook confirme que la publication est visible sur la Page `gâteau algérien`, avec le titre arabe, la photo de pâtisseries, le numéro `0555 18 84 55` et les hashtags attendus.
