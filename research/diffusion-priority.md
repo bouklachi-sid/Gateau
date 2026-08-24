@@ -14,7 +14,7 @@ Cet ordre privilégie les **groupes locaux** liés aux commandes de gâteaux et 
 | 6 | Métiers et commandes Alger–Boumerdès–Blida–Tipaza | Zone prioritaire | Portée géographique couvrant les quatre zones cibles | À vérifier | Non contacté |
 | 7 | Gâteaux algériens faits maison disponibles sur commande | Alger–Tipaza / proche | Produits et commandes cohérents avec l’offre | À vérifier | Non contacté |
 | 8 | Commande du jour | Alger–Tipaza / proche | Groupe à vocation de commandes | À vérifier | Non contacté |
-| 9 | nass kolea | Koléa, Tipaza | Groupe public local de 1,2 K membres observés ; les publications visibles incluent des services et annonces locales, ainsi que des visuels alimentaires | Nacif Gx, administrateur vérifié (`/groups/3967652963360670/user/100070695155253/`) | Prêt pour une demande d’autorisation individuelle ; non contacté |
+| 9 | nass kolea | Koléa, Tipaza | Groupe public local de 1,2 K membres observés ; les publications visibles incluent des services et annonces locales, ainsi que des visuels alimentaires | Nacif Gx, administrateur vérifié (`/groups/3967652963360670/user/100070695155253/`) | Message tenté après accord du propriétaire, mais Facebook n’autorise pas le contact ; aucun message envoyé ni partage autorisé |
 | 10 | صدى القليعة — Kolea écho | Koléa, Tipaza | Page locale d’informations et d’annonces ; la diffusion commerciale dépend de ses règles | Administrateurs à vérifier | Non contacté |
 
 ## Règle opérationnelle

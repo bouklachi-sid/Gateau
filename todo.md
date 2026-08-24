@@ -122,3 +122,10 @@ La recherche externe doit privilégier Alger, Tipaza et les communes voisines av
 - [x] Exiger dans chaque prochain visuel l’appel à la commande arabe « للطلبات: 0555188455 » en grande taille, sur une zone dégagée et contrastée.
 - [x] Importer le visuel Gemini contrôlé, compléter sa checklist de conformité et préparer la publication Facebook sans l’envoyer.
 - [x] Obtenir une confirmation explicite immédiatement avant de publier la nouvelle communication sur la Page Facebook « gâteau algérien ».
+- [ ] Vérifier les réponses aux demandes d’autorisation et ne préparer un partage tiers que pour un espace dont l’accord explicite est enregistré.
+- [ ] Envoyer à Nacif Gx la demande confirmée d’autorisation de partager une seule publication dans le groupe local nass kolea.
+- [ ] Prioriser les demandes d’autorisation dans les communautés locales pertinentes sans partager dans un espace public non autorisé.
+- [x] Afficher et tester l’état « prêt pour publication automatique » uniquement lorsque tous les critères visuels certifiés sont satisfaits.
+- [x] Renouveler le jeton Meta de la Page actuellement expiré et vérifier son accès sécurisé à Meta.
+- [ ] Déclencher ou attendre un créneau dû avec un contenu image réellement approuvé, puis vérifier un cycle Heartbeat `processed > 0` aboutissant à `status=published` et `metaPostId` après le renouvellement du jeton Meta.
+- [ ] Documenter dans l’audit la preuve de reprise automatique post-renouvellement : exécution Heartbeat, publication et identifiant Meta enregistré.
