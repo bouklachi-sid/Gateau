@@ -27,5 +27,22 @@ describe("Meta Page token resolution", () => {
     expect(String(fetchMock.mock.calls[2][0])).toContain("/page-1/photos");
     expect(String(fetchMock.mock.calls[2][1].body)).toContain("access_token=page-token");
   });
-});
 
+  it("uses a configured Page token directly when its identity matches the target Page", async () => {
+    process.env.META_PAGE_ACCESS_TOKEN = "direct-page-token";
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify({ id: "page-1" }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ post_id: "page-1_43" }), { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    const result = await publishToFacebook({
+      pageId: "page-1",
+      message: "Essai direct",
+      imageUrl: "https://example.com/photo.jpg",
+    });
+
+    expect(result.metaPostId).toBe("page-1_43");
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(String(fetchMock.mock.calls[1][1].body)).toContain("access_token=direct-page-token");
+  });
+});

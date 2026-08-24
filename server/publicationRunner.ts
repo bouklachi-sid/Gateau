@@ -1,11 +1,11 @@
 import { and, eq, gte, lte } from "drizzle-orm";
 import { automationSettings, businesses, contentPosts, mediaAssets, offers, products, publicationLogs, publishingSlots } from "../drizzle/schema";
-import { generateImage } from "./_core/imageGeneration";
-import { generateLocalizedCaption, buildScenePrompt } from "./contentEngine";
+import { generateLocalizedCaption } from "./contentEngine";
 import { getBusinessWorkspace, getDb } from "./db";
 import { publishToFacebook } from "./meta";
 import { effectiveDailyLimit } from "./publicationPolicy";
 import { createDueSlotPublicationSpecs } from "./schedulePlanner";
+import { visualPublicationBlockReason } from "../shared/visualCompliance";
 
 function currentAlgeriaDayBounds() {
   const now = new Date();
@@ -49,6 +49,7 @@ async function createDueSlotPublications(businessId: number, now: Date) {
       status: "scheduled",
       title: `${plan.slotLabel} — automatique`,
       scheduledFor: plan.scheduledFor,
+      visualComplianceStatus: "pending_review",
     });
     const postId = Number(result[0].insertId);
     await logEvent({ businessId, postId, event: "queued", message: `Contenu créé automatiquement pour le créneau ${plan.slotLabel}.` });
@@ -90,6 +91,35 @@ export async function runDuePublicationsForBusiness(businessId: number) {
   let processed = 0;
   for (const post of duePosts) {
     try {
+      const visualMedia = post.visualMediaAssetId
+        ? (await db.select({ retouchStatus: mediaAssets.retouchStatus }).from(mediaAssets).where(and(eq(mediaAssets.id, post.visualMediaAssetId), eq(mediaAssets.businessId, businessId))).limit(1))[0]
+        : undefined;
+      const visualBlockReason = visualPublicationBlockReason({
+        format: post.format,
+        imageUrl: post.imageUrl,
+        visualComplianceStatus: post.visualComplianceStatus,
+        visualMediaAssetId: post.visualMediaAssetId,
+        visualRetouched: post.visualRetouched === 1 && visualMedia?.retouchStatus === "retouched" ? 1 : 0,
+        cakePreserved: post.cakePreserved,
+        professionalStagingApproved: post.professionalStagingApproved,
+        phoneNumberInImage: post.phoneNumberInImage,
+        visualPhoneNumber: post.visualPhoneNumber,
+        visualOrderCallout: post.visualOrderCallout,
+        visualSceneDirection: post.visualSceneDirection,
+        visualDecor: post.visualDecor,
+        visualLighting: post.visualLighting,
+        visualAngle: post.visualAngle,
+        visualProps: post.visualProps,
+        visualMood: post.visualMood,
+      });
+      if (visualBlockReason) {
+        await db.update(contentPosts).set({ errorMessage: visualBlockReason, visualComplianceNote: visualBlockReason }).where(eq(contentPosts.id, post.id));
+        if (post.visualComplianceNote !== visualBlockReason) {
+          await logEvent({ businessId, postId: post.id, event: "blocked", message: visualBlockReason });
+        }
+        continue;
+      }
+
       await db.update(contentPosts).set({ status: "publishing", errorMessage: null }).where(eq(contentPosts.id, post.id));
       const product = post.productId
         ? (await db.select().from(products).where(eq(products.id, post.productId)).limit(1))[0]
@@ -117,24 +147,9 @@ export async function runDuePublicationsForBusiness(businessId: number) {
         await logEvent({ businessId, postId: post.id, event: "prepared", message: "Légende localisée préparée automatiquement." });
       }
 
-      let imageUrl = post.imageUrl;
-      if (post.format === "image" && !imageUrl) {
-        const prompt = product?.photoUrl
-          ? buildScenePrompt({ productName: product.name, productDescription: product.description, direction: product.visualPrompt ?? imagePrompt })
-          : imagePrompt ?? "Premium Algerian pastry campaign, refined still life, warm editorial light, no text, no logo.";
-        const generated = await generateImage({
-          prompt,
-          originalImages: product?.photoUrl ? [{ url: product.photoUrl, mimeType: "image/jpeg" }] : undefined,
-        });
-        if (!generated.url) throw new Error("La génération visuelle n’a renvoyé aucune image exploitable.");
-        imageUrl = generated.url;
-        await db.update(contentPosts).set({ imageUrl, imagePrompt: prompt }).where(eq(contentPosts.id, post.id));
-        await db.insert(mediaAssets).values({ businessId, postId: post.id, productId: product?.id, kind: product?.photoUrl ? "product" : "promotion", source: "generated", url: imageUrl, prompt, altText: product ? `Mise en scène de ${product.name}` : "Visuel promotionnel de pâtisserie" });
-      }
-
       const message = [caption, callToAction, hashtags].filter(Boolean).join("\n\n");
-      const result = await publishToFacebook({ pageId, message, linkUrl: post.linkUrl, imageUrl });
-      await db.update(contentPosts).set({ status: "published", publishedAt: new Date(), metaPostId: result.metaPostId, caption, callToAction, hashtags, imageUrl, errorMessage: null }).where(eq(contentPosts.id, post.id));
+      const result = await publishToFacebook({ pageId, message, linkUrl: post.linkUrl, imageUrl: post.imageUrl });
+      await db.update(contentPosts).set({ status: "published", publishedAt: new Date(), metaPostId: result.metaPostId, caption, callToAction, hashtags, errorMessage: null }).where(eq(contentPosts.id, post.id));
       await logEvent({ businessId, postId: post.id, event: "published", message: "Publication envoyée avec succès vers Facebook.", metaResponse: JSON.stringify(result) });
       processed += 1;
     } catch (error) {

@@ -10,7 +10,7 @@ type ContentType = "commercial" | "saisonnier" | "traditionnel" | "produit" | "o
 export type AutomaticContentSpec = {
   slotLabel: string;
   contentType: ContentType;
-  format: "image" | "text";
+  format: "image";
   productId: number | null;
   offerId: number | null;
   scheduledFor: Date;
@@ -60,7 +60,7 @@ export function createDueSlotPublicationSpecs(input: {
       ? input.products[scheduledFor.getUTCHours() % input.products.length]
       : undefined;
     const offer = contentType === "offre" ? input.offers[0] : undefined;
-    const format: "image" | "text" = ["traditionnel", "produit", "commercial"].includes(contentType) ? "image" : "text";
+    const format: "image" = "image";
     plans.push({ slotLabel: slot.label, contentType, format, productId: product?.id ?? null, offerId: offer?.id ?? null, scheduledFor });
     occupied.add(scheduledFor.getTime());
   }

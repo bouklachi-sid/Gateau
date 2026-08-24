@@ -12,6 +12,8 @@ import { getBusinessWorkspace, getDashboardData, getDb, getMediaLibrary, getPost
 import { metaTokenIsConfigured, validateMetaPage } from "./meta";
 import { storagePut } from "./storage";
 import { hasDailyPublicationCapacity } from "./publicationPolicy";
+import { REQUIRED_IMAGE_ORDER_CALLOUT, REQUIRED_IMAGE_PHONE_NUMBER, retouchedMediaBlockReason, visualReuseBlockReason } from "../shared/visualCompliance";
+import { requireCertifiedRetouchedMedia } from "./visualMediaCertification";
 
 const contentTypeSchema = z.enum(["commercial", "saisonnier", "traditionnel", "produit", "offre", "engagement"]);
 const postFormatSchema = z.enum(["text", "link", "image"]);
@@ -106,8 +108,43 @@ export const appRouter = router({
       const result = await generateImage({ prompt, originalImages: [{ url: product.photoUrl, mimeType: "image/jpeg" }] });
       if (!result.url) throw new Error("La mise en scène n’a produit aucune image exploitable.");
       const generatedUrl = result.url;
-      await db.insert(tables.mediaAssets).values({ businessId: business.id, productId: product.id, kind: "product", source: "generated", url: generatedUrl, prompt, altText: `Mise en scène de ${product.name}` });
+      await db.insert(tables.mediaAssets).values({ businessId: business.id, productId: product.id, kind: "product", source: "generated", retouchStatus: "retouched", retouchedAt: new Date(), url: generatedUrl, prompt, altText: `Mise en scène retouchée de ${product.name}` });
       return { url: generatedUrl, prompt };
+    }),
+    registerExternalRetouchedVisual: protectedProcedure.input(z.object({
+      postId: z.number().int().positive(),
+      fileName: z.string().trim().min(1).max(140),
+      dataUrl: z.string().min(30),
+      provider: z.string().trim().min(2).max(80),
+      prompt: z.string().trim().min(20).max(2000),
+      cakePreservedConfirmed: z.literal(true),
+      phoneNumberConfirmed: z.literal(true),
+    })).mutation(async ({ ctx, input }) => {
+      const match = input.dataUrl.match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/);
+      if (!match) throw new Error("Format d’image non pris en charge. Utilisez JPEG, PNG ou WebP.");
+      const buffer = Buffer.from(match[2]!, "base64");
+      if (buffer.byteLength > 10 * 1024 * 1024) throw new Error("Le visuel ne doit pas dépasser 10 Mo.");
+      const db = await getDb();
+      if (!db) throw new Error("Base de données indisponible.");
+      const { business } = await getBusinessWorkspace(ctx.user.id);
+      const post = (await db.select().from(tables.contentPosts).where(and(eq(tables.contentPosts.id, input.postId), eq(tables.contentPosts.businessId, business.id))).limit(1))[0];
+      if (!post) throw new Error("Publication introuvable.");
+      const safeName = input.fileName.replace(/[^a-zA-Z0-9._-]/g, "-");
+      const stored = await storagePut(`business-${business.id}/retouched/${safeName}`, buffer, match[1]!);
+      const result = await db.insert(tables.mediaAssets).values({
+        businessId: business.id,
+        productId: post.productId,
+        kind: "promotion",
+        source: "generated",
+        retouchStatus: "retouched",
+        retouchedAt: new Date(),
+        url: stored.url,
+        prompt: `[${input.provider}] ${input.prompt}`,
+        altText: `Rendu ${input.provider} retouché et contrôlé pour ${post.title || "publication"}`,
+      });
+      const mediaId = Number(result[0].insertId);
+      await db.insert(tables.publicationLogs).values({ businessId: business.id, postId: post.id, event: "prepared", message: `Rendu ${input.provider} enregistré comme média retouché certifié ; validation de scène encore requise.` });
+      return { mediaId, url: stored.url };
     }),
     createSlot: protectedProcedure.input(z.object({
       label: z.string().trim().min(2).max(100),
@@ -150,7 +187,7 @@ export const appRouter = router({
     media: protectedProcedure.query(({ ctx }) => getMediaLibrary(ctx.user.id)),
     createPost: protectedProcedure.input(z.object({
       contentType: contentTypeSchema,
-      format: postFormatSchema,
+      format: z.literal("image"),
       productId: z.number().int().positive().nullable(),
       title: z.string().trim().max(180).nullable(),
       scheduledFor: z.date(),
@@ -161,8 +198,114 @@ export const appRouter = router({
       const existing = await db.select({ count: sql<number>`count(*)` }).from(tables.contentPosts).where(and(eq(tables.contentPosts.businessId, business.id), sql`DATE(${tables.contentPosts.scheduledFor}) = DATE(${input.scheduledFor})`, eq(tables.contentPosts.status, "scheduled")));
       const dailyLimit = settings?.maxPostsPerDay ?? 10;
       if (!hasDailyPublicationCapacity(Number(existing[0]?.count ?? 0), dailyLimit)) throw new Error(`La limite de ${dailyLimit} publications prévues pour cette journée est atteinte.`);
-      const result = await db.insert(tables.contentPosts).values({ ...input, businessId: business.id, status: "scheduled" });
+      const result = await db.insert(tables.contentPosts).values({ ...input, businessId: business.id, status: "scheduled", visualComplianceStatus: "pending_review" });
       return { id: Number(result[0].insertId) };
+    }),
+    attachVisualFromMedia: protectedProcedure.input(z.object({
+      postId: z.number().int().positive(),
+      mediaId: z.number().int().positive(),
+    })).mutation(async ({ ctx, input }) => {
+      const db = await getDb();
+      if (!db) throw new Error("Base de données indisponible.");
+      const { business } = await getBusinessWorkspace(ctx.user.id);
+      const post = (await db.select().from(tables.contentPosts).where(and(eq(tables.contentPosts.id, input.postId), eq(tables.contentPosts.businessId, business.id))).limit(1))[0];
+      const media = (await db.select().from(tables.mediaAssets).where(and(eq(tables.mediaAssets.id, input.mediaId), eq(tables.mediaAssets.businessId, business.id))).limit(1))[0];
+      if (!post || !media) throw new Error("Publication ou visuel introuvable.");
+      requireCertifiedRetouchedMedia({ id: media.id, retouchStatus: media.retouchStatus });
+      await db.update(tables.contentPosts).set({
+        imageUrl: media.url,
+        imagePrompt: media.prompt,
+        visualComplianceStatus: "pending_review",
+        visualComplianceNote: "Visuel retouché associé : validation manuelle requise avant publication.",
+        visualMediaAssetId: media.id,
+        visualRetouched: media.retouchStatus === "retouched" ? 1 : 0,
+        visualPhoneNumber: null,
+        visualOrderCallout: null,
+        visualSceneDirection: null,
+        visualDecor: null,
+        visualLighting: null,
+        visualAngle: null,
+        visualProps: null,
+        visualMood: null,
+        cakePreserved: 0,
+        professionalStagingApproved: 0,
+        phoneNumberInImage: 0,
+        visualVerifiedAt: null,
+        errorMessage: null,
+      }).where(eq(tables.contentPosts.id, post.id));
+      await db.insert(tables.publicationLogs).values({ businessId: business.id, postId: post.id, event: "prepared", message: "Visuel déclaré retouché et associé à la publication ; validation manuelle encore requise." });
+      return { success: true, imageUrl: media.url };
+    }),
+    approveVisual: protectedProcedure.input(z.object({
+      postId: z.number().int().positive(),
+      decor: z.string().trim().min(3).max(160),
+      lighting: z.string().trim().min(3).max(160),
+      angle: z.string().trim().min(3).max(160),
+      props: z.string().trim().min(3).max(160),
+      mood: z.string().trim().min(3).max(160),
+      note: z.string().trim().max(1200).nullable(),
+      cakePreserved: z.literal(true),
+      professionalStagingApproved: z.literal(true),
+      phoneNumberInImage: z.literal(true),
+      orderCalloutInImage: z.literal(true),
+    })).mutation(async ({ ctx, input }) => {
+      const db = await getDb();
+      if (!db) throw new Error("Base de données indisponible.");
+      const { business } = await getBusinessWorkspace(ctx.user.id);
+      const post = (await db.select().from(tables.contentPosts).where(and(eq(tables.contentPosts.id, input.postId), eq(tables.contentPosts.businessId, business.id))).limit(1))[0];
+      if (!post) throw new Error("Publication introuvable.");
+      const media = post.visualMediaAssetId ? (await db.select().from(tables.mediaAssets).where(and(eq(tables.mediaAssets.id, post.visualMediaAssetId), eq(tables.mediaAssets.businessId, business.id))).limit(1))[0] : undefined;
+      if (post.format !== "image" || !post.imageUrl || !post.visualMediaAssetId || post.visualRetouched !== 1 || media?.retouchStatus !== "retouched") {
+        throw new Error("Associez d’abord un média déclaré comme visuel retouché avant de le valider.");
+      }
+      const approvedScenes = await db.select({
+        id: tables.contentPosts.id,
+        visualMediaAssetId: tables.contentPosts.visualMediaAssetId,
+        decor: tables.contentPosts.visualDecor,
+        lighting: tables.contentPosts.visualLighting,
+        angle: tables.contentPosts.visualAngle,
+        props: tables.contentPosts.visualProps,
+        mood: tables.contentPosts.visualMood,
+      }).from(tables.contentPosts).where(and(
+        eq(tables.contentPosts.businessId, business.id),
+        eq(tables.contentPosts.visualComplianceStatus, "approved"),
+      ));
+      const reuseReason = visualReuseBlockReason({
+        postId: post.id,
+        visualMediaAssetId: post.visualMediaAssetId,
+        decor: input.decor,
+        lighting: input.lighting,
+        angle: input.angle,
+        props: input.props,
+        mood: input.mood,
+        approvedVisuals: approvedScenes,
+      });
+      if (reuseReason) throw new Error(reuseReason);
+      const sceneDirection = `Décor : ${input.decor.trim()} | Éclairage : ${input.lighting.trim()} | Angle : ${input.angle.trim()} | Accessoires : ${input.props.trim()} | Ambiance : ${input.mood.trim()}`;
+      await db.update(tables.contentPosts).set({
+        visualComplianceStatus: "approved",
+        visualComplianceNote: input.note || "Contrôle manuel validé : gâteau préservé, mise en scène commerciale distincte et numéro visible.",
+        visualPhoneNumber: REQUIRED_IMAGE_PHONE_NUMBER,
+        visualOrderCallout: REQUIRED_IMAGE_ORDER_CALLOUT,
+        visualSceneDirection: sceneDirection,
+        visualDecor: input.decor.trim(),
+        visualLighting: input.lighting.trim(),
+        visualAngle: input.angle.trim(),
+        visualProps: input.props.trim(),
+        visualMood: input.mood.trim(),
+        cakePreserved: 1,
+        professionalStagingApproved: 1,
+        phoneNumberInImage: 1,
+        visualVerifiedAt: new Date(),
+        errorMessage: null,
+      }).where(eq(tables.contentPosts.id, post.id));
+      await db.insert(tables.publicationLogs).values({
+        businessId: business.id,
+        postId: post.id,
+        event: "prepared",
+        message: `Visuel retouché approuvé manuellement avec une scène commerciale distincte et l’appel « ${REQUIRED_IMAGE_ORDER_CALLOUT} ».`,
+      });
+      return { success: true, sceneDirection, phoneNumber: REQUIRED_IMAGE_PHONE_NUMBER, orderCallout: REQUIRED_IMAGE_ORDER_CALLOUT };
     }),
     generateCaption: protectedProcedure.input(z.object({ postId: z.number().int().positive() })).mutation(async ({ ctx, input }) => {
       const db = await getDb();

@@ -22,6 +22,34 @@
       "when": 1787532993087,
       "tag": "0002_keen_midnight",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1787544094469,
+      "tag": "0003_true_frank_castle",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1787544485951,
+      "tag": "0004_married_shadow_king",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1787545018432,
+      "tag": "0005_shiny_major_mapleleaf",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1787545888919,
+      "tag": "0006_wonderful_kree",
+      "breakpoints": true
     }
   ]
 }

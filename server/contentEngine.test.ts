@@ -8,6 +8,8 @@ describe("buildScenePrompt", () => {
     expect(prompt).toContain("preserve the pastry exactly as supplied");
     expect(prompt).toContain("Only enhance the surrounding scene");
     expect(prompt).toContain("Makrout aux dattes");
+    expect(prompt).toContain("للطلبات: 0555188455");
+    expect(prompt).toContain("large, high-contrast");
+    expect(prompt).toContain("Unique art direction for this publication");
   });
 });
-

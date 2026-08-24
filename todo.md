@@ -93,3 +93,31 @@ La recherche externe doit privilégier Alger, Tipaza et les communes voisines av
 - [x] Identifier le modèle gratuit le plus performant pour retoucher les photos sans modifier les gâteaux : Qwen-Image-Edit-2511.
 - [x] Créer et publier un essai Facebook avec une photo déjà chargée, puis vérifier son identifiant Meta.
 - [x] Résoudre dynamiquement le jeton de Page Meta avant chaque publication afin d’éviter l’erreur `publish_actions` du jeton utilisateur.
+- [x] Identifier une alternative entièrement gratuite et sans CAPTCHA pour retoucher les visuels sans modifier les gâteaux : IOPaint local, avec Krita AI Diffusion et Qwen local comme options avancées.
+- [x] Identifier le modèle gratuit le plus performant pour préserver les gâteaux tout en remplaçant le texte des visuels : Qwen-Image-Edit-2511 (Apache-2.0).
+- [ ] Créer et publier une nouvelle communication Facebook avec Qwen-Image-Edit-2511, sans modifier le gâteau et avec le contact 0555 18 84 55.
+- [x] Identifier un modèle local gratuit sans compte ni CAPTCHA pour créer la nouvelle publication demandée : LaMa via IOPaint.
+- [x] Identifier un modèle de retouche d’image en ligne réellement gratuit pour créer la nouvelle publication demandée : LaMa via IOPaint sur Hugging Face.
+- [ ] Publier une nouvelle communication avec IOPaint-LaMa et diffuser uniquement vers les espaces tiers explicitement autorisés.
+- [ ] Envoyer des demandes d’autorisation de partage aux administrateurs des communautés Facebook qualifiées et accessibles.
+- [ ] Prioriser les communautés avec canal administrateur vérifiable ou règles favorables avant d’envoyer de nouvelles demandes.
+- [ ] Publier une nouvelle communication à partir d’un contenu planifié et la partager uniquement vers les espaces autorisés.
+- [x] Renouveler le jeton Meta expiré afin de reprendre les publications Facebook automatisées et manuelles.
+- [x] Accepter aussi un jeton Meta de Page direct, sans appeler l’endpoint `me/accounts` réservé aux jetons utilisateur.
+- [x] Publier le contenu programmé « حلوى بيضاء لذوق ناعم » avec le jeton de Page renouvelé et enregistrer son identifiant Meta.
+- [x] Exiger une photo retouchée avec mise en scène professionnelle et le numéro 0555 18 84 55 intégré dans l’image avant chaque publication.
+- [x] Exiger une mise en scène différente à chaque publication : décor, lumière, angle, accessoires et ambiance non répétés.
+- [ ] Préparer un visuel commercial de remplacement pour la dernière publication, sans modifier le gâteau, avec le numéro 0555 18 84 55 lisible dans l’image avant toute republication.
+- [ ] Utiliser un modèle gratuit en ligne pour le visuel de remplacement, puis vérifier manuellement le gâteau, la scène commerciale distincte et le numéro avant toute publication.
+- [x] Refuser à l’approbation tout média original non déclaré comme visuel retouché et conserver la référence du média contrôlé.
+- [x] Refuser la réutilisation d’un même visuel et d’un décor, éclairage, angle, accessoires ou ambiance déjà approuvés.
+- [x] Étendre les tests avec les refus de média original, de réutilisation visuelle et de réutilisation de composante de scène.
+- [x] Ajouter un statut de retouche persistant au média et refuser côté serveur les originaux, même si le client les déclare retouchés.
+- [x] Tester explicitement le refus côté serveur d’un média original et l’acceptation d’un média certifié retouché.
+- [x] Tester sur un module serveur appelé par la route que seul un média au statut `retouched` peut être associé à une publication.
+- [ ] Créer avec Gemini un nouveau visuel commercial, sans modifier le gâteau, avec le numéro 0555188455 lisible dans l’image.
+- [ ] Vérifier manuellement le rendu Gemini, l’importer comme média retouché et préparer la légende arabe avant de demander confirmation de publication.
+- [ ] Permettre d’importer un rendu externe contrôlé comme média retouché certifié, avec sa provenance et sa consigne de retouche.
+- [ ] Exiger dans chaque prochain visuel l’appel à la commande arabe « للطلبات: 0555188455 » en grande taille, sur une zone dégagée et contrastée.
+- [ ] Importer le visuel Gemini contrôlé, compléter sa checklist de conformité et préparer la publication Facebook sans l’envoyer.
+- [ ] Obtenir une confirmation explicite immédiatement avant de publier la nouvelle communication sur la Page Facebook « gâteau algérien ».

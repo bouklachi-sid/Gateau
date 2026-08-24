@@ -12,7 +12,7 @@ Vérification textuelle exécutée : `pageName = "gâteau algérien"`, `connecti
 | Automatisation | Active | Carte « Automatisation active » du tableau de bord | Conserver l’interrupteur d’arrêt immédiat comme garde-fou |
 | Plafond quotidien | 10 publications | Carte « 10/10 » et limite affichée à 10 | Ne pas créer de publication supplémentaire aujourd’hui |
 | Créneaux actifs | 10 | Tableau de bord filtré sur `isActive = 1` | Garder les créneaux inactifs hors du calendrier affiché |
-| Publications du jour | 10 contenus arabes prêts | Photos téléversées et contenus planifiés | Laisser Heartbeat les traiter à leurs créneaux |
+| Publications du jour | 2 publiées, 8 en attente de conformité | Les visuels restants ne sont pas encore approuvés avec le numéro dans l’image | Bloquer Heartbeat jusqu’à validation manuelle de chaque visuel |
 | Partages tiers | Non activés | Aucune permission tierce enregistrée | Demander une autorisation avant tout ajout de destination |
 
 ## Les dix créneaux actifs — heure Algérie
@@ -32,9 +32,9 @@ Vérification textuelle exécutée : `pageName = "gâteau algérien"`, `connecti
 
 ## Priorités de fonctionnement
 
-Le workflow est optimisé autour d’un seul mécanisme durable : le planificateur Heartbeat contrôle les créneaux sans dépendre d’un navigateur ouvert. Les publications d’aujourd’hui sont déjà préparées en arabe avec des photos téléversées, ce qui évite une génération d’image au moment de la diffusion.
+Le workflow est optimisé autour d’un seul mécanisme durable : le planificateur Heartbeat contrôle les créneaux sans dépendre d’un navigateur ouvert. Il n’envoie toutefois plus un contenu au seul motif qu’un créneau est dû : les contenus image restent en attente tant qu’un visuel réellement retouché n’a pas été contrôlé puis approuvé manuellement.
 
-Les points à surveiller restent la première exécution qui traite effectivement un contenu, le remplacement des anciens visuels contenant le précédent numéro lorsque la capacité de génération d’image sera disponible, ainsi que les demandes d’autorisation auprès des communautés tierces. Aucune diffusion vers un groupe ou une autre Page ne doit être activée avant cet accord.
+Les points à surveiller restent la première exécution qui traite effectivement un contenu approuvé, le remplacement des anciens visuels contenant le précédent numéro lorsque la capacité de génération d’image sera disponible, ainsi que les demandes d’autorisation auprès des communautés tierces. Aucune diffusion vers un groupe ou une autre Page ne doit être activée avant cet accord.
 
 ## État du planificateur
 
@@ -55,3 +55,35 @@ Le visuel chargé `post-01_e8b84c07.jpeg` et sa légende arabe ont été publié
 La cause du premier refus HTTP 403 était l’utilisation directe d’un jeton utilisateur vers l’endpoint de publication. La logique applicative résout désormais le jeton spécifique de la Page à partir de `/me/accounts` avant chaque envoi ; les tests automatisés associés sont réussis.
 
 La vérification visuelle sur Facebook confirme que la publication est visible sur la Page `gâteau algérien`, avec le titre arabe, la photo de pâtisseries, le numéro `0555 18 84 55` et les hashtags attendus.
+
+Les passages suivants du job propriétaire restent réguliers et réussis (HTTP 200, `processed: 0`) tant qu’aucun nouveau créneau n’est dû, notamment à 03:09 et 03:14 UTC. Le mécanisme de planification est donc opérationnel ; la prochaine preuve attendue est un passage avec `processed > 0` sur une des neuf publications encore programmées.
+
+## Demande d’autorisation de diffusion tierce — 24 août 2026
+
+Une première demande d’autorisation a été envoyée via Messenger à **Fatiha Abbad**, administratrice vérifiée du groupe public **« Gâteau »** (`https://www.facebook.com/groups/474927960344250/`, 13,8 K membres observés). La demande en arabe sollicite explicitement le droit de partager une seule publication et confirme le respect des règles du groupe. Aucun contenu n’a été publié dans le groupe ; le statut reste **en attente de réponse et d’autorisation explicite**.
+
+## Reprise confirmée après renouvellement Meta — 24 août 2026
+
+Le jeton Meta renouvelé a été validé par un test live Graph API. Il s’agit d’un jeton de Page direct ; la logique et le script de publication acceptent désormais ce cas sans tenter l’endpoint `me/accounts` réservé à un jeton utilisateur. La publication programmée **« حلوى بيضاء لذوق ناعم »** a ensuite été envoyée avec succès sur la Page **« gâteau algérien »**, identifiant Meta `1313747908483475_122102637075447468`, puis vérifiée visuellement à l’adresse `https://www.facebook.com/61593424064482/posts/122102637075447468/`. Le contenu interne `30002` est enregistré avec le statut `published` afin d’empêcher toute republication automatique.
+
+À ce stade, aucune autorisation tierce n’a encore été reçue. La publication est donc diffusée sur la Page propriétaire uniquement, conformément à la règle de consentement explicite.
+
+## Verrou de conformité visuelle — ajouté le 24 août 2026
+
+Chaque nouvelle publication doit désormais être au format image. Le job Heartbeat bloque sans appel à Meta tout contenu qui ne satisfait pas toutes les conditions suivantes : une image est associée depuis la médiathèque avec le statut persistant **`retouched`** ; cette référence de média n’est pas déjà approuvée pour un autre post ; elle a été validée manuellement ; le gâteau d’origine est confirmé comme préservé ; le numéro exact **0555 18 84 55** est confirmé lisible à l’intérieur de l’image ; les cinq composantes de la mise en scène — décor, éclairage, angle, accessoires et ambiance — sont renseignées et aucune ne reprend une valeur déjà approuvée pour une autre publication. Un média déclaré `original` reste refusé par la route d’association, par la validation et par le runner, même si un client tente de le présenter comme retouché. Un blocage conserve le statut programmé, explique le correctif attendu dans le journal et n’est pas compté comme une publication échouée.
+
+L’interface Contenus permet d’associer un visuel de la médiathèque et d’exécuter cette checklist. Cette validation est volontairement humaine : l’application ne prétend ni détecter automatiquement le texte dans l’image ni certifier par IA que le gâteau a été préservé. Les visuels déjà chargés sont tous considérés **en attente de contrôle** ; aucun ancien visuel n’est rétroactivement approuvé.
+
+La préparation du visuel de remplacement de la dernière publication a été tentée avec la démo gratuite en ligne **Qwen Image Edit** : la photo source et la consigne commerciale ont été acceptées, mais l’exécution a été refusée par la démo avec l’erreur `ZeroGPU illegal duration` (240 secondes demandées au-delà de la durée maximale autorisée). Aucun rendu n’a donc été créé, certifié, associé ou publié. Un futur rendu ne sera associé, approuvé puis publié qu’après vérification visuelle du gâteau, de la scène commerciale distincte et du numéro exact.
+
+## Essai Gemini — nouvelle publication en cours de contrôle
+
+La photo source `post-03.jpeg` a été importée dans Gemini avec une consigne de décor noyer clair, fond sable, lumière latérale de fin d’après-midi, branches d’olivier, tasse dorée et numéro exact `0555 18 84 55` en bas à droite. Gemini a produit un premier rendu. Ce rendu reste **non associé, non certifié et non publié** tant que la comparaison avec le fichier source ne confirme pas que chaque gâteau et le plateau restent inchangés, et que le numéro est réellement lisible et exact.
+
+Le fichier de rendu a été téléchargé localement sous le nom `Gemini_Generated_Image_hxt2v4hxt2v4hxt2.jpeg` uniquement pour contrôle. Il ne doit pas être importé dans la médiathèque tant que les critères de préservation et de numéro ne sont pas vérifiés.
+
+Après la modification de la règle métier, une seconde génération Gemini a été demandée avec le texte exact `للطلبات: 0555188455`, plus grand et contrasté. Le second rendu doit être téléchargé puis inspecté en pleine résolution ; il reste **non associé, non certifié et non publié** tant que le texte exact et la préservation des gâteaux n’ont pas été confirmés.
+
+Le second fichier a été téléchargé sous le nom `Gemini_Generated_Image_502svm502svm502s.jpeg` pour ce seul contrôle.
+
+Contrôle visuel effectué : le second rendu conserve le plateau et les gâteaux visibles dans la photo source, applique une scène commerciale noyer/sable avec café doré et feuillage d’olivier, et affiche en grand, sur cartouche ivoire contrasté, l’appel `للطلبات: 0555188455`. Il reste néanmoins en attente d’import et d’approbation dans l’espace privé, car aucune validation ne doit contourner la checklist applicative.

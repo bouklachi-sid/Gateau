@@ -1,4 +1,5 @@
 import { invokeLLM } from "./_core/llm";
+import { REQUIRED_IMAGE_ORDER_CALLOUT, REQUIRED_IMAGE_PHONE_NUMBER } from "../shared/visualCompliance";
 
 export type CaptionContext = {
   business: {
@@ -29,21 +30,23 @@ export function buildScenePrompt(input: {
   productDescription?: string | null;
   direction?: string | null;
 }) {
-  const direction = input.direction?.trim() || "lumière chaude de fin d’après-midi, fond minéral crème, accessoires sobres en laiton brossé";
+  const direction = input.direction?.trim() || "marbre crème, ruban de soie et lumière douce du matin";
   return [
-    "Create a premium editorial food-photography presentation around the supplied pastry photograph.",
+    "Edit the supplied pastry photograph into one premium commercial food-photography presentation for Facebook.",
     `Product: ${input.productName}${input.productDescription ? ` — ${input.productDescription}` : ""}.`,
-    `Art direction: ${direction}.`,
+    `Unique art direction for this publication: ${direction}. Do not reuse this staging, prop combination, lighting setup, camera angle, background treatment, or mood for another publication.`,
     "NON-NEGOTIABLE PRODUCT LOCK: preserve the pastry exactly as supplied; do not alter its shape, decorations, piping, colors, texture, size, toppings, writing, edges, or proportions.",
     "Only enhance the surrounding scene: lighting, set dressing, surface, background, tasteful props, lens-like depth and professional framing.",
-    "No text, no logos, no price tags, no additional pastries, no hands, no people. Refined Algerian patisserie campaign, high-end, appetizing and realistic.",
+    `Render this exact Arabic ordering callout inside the image: « ${REQUIRED_IMAGE_ORDER_CALLOUT} ». It must be large, high-contrast and clearly readable in an empty safe area, preferably in the lower third, without covering the pastry. Do not change, space, translate or omit any character.`,
+    "Commercial product presentation only: refined Algerian patisserie campaign, high-end, appetizing, realistic and designed to encourage orders. No additional pastries, no hands and no people.",
   ].join(" ");
 }
 
 export async function generateLocalizedCaption(context: CaptionContext): Promise<GeneratedCaption> {
   const orderRoute = [
+    `Commande visuelle obligatoire : ${REQUIRED_IMAGE_ORDER_CALLOUT}`,
     context.business.whatsapp ? `WhatsApp: ${context.business.whatsapp}` : null,
-    context.business.phone ? `Téléphone: ${context.business.phone}` : null,
+    context.business.phone ? `Téléphone: ${REQUIRED_IMAGE_PHONE_NUMBER}` : null,
     context.business.orderUrl ? `Order link: ${context.business.orderUrl}` : null,
     context.business.orderInstructions,
   ].filter(Boolean).join(" | ");
@@ -73,7 +76,7 @@ export async function generateLocalizedCaption(context: CaptionContext): Promise
             "The caption must be ready to publish, warm and elegant, maximum 115 words excluding hashtags.",
             "Include one clear, configurable ordering call to action.",
             "Return 4 to 8 relevant hashtags including a local Algerian context where natural.",
-            "Create an English image-art-direction prompt with no text or logos.",
+            `Create an English commercial image-art-direction prompt. It must preserve the supplied pastry, request a new decor/light/angle/props/mood compared with other posts, and require this exact large Arabic ordering callout inside the final image: « ${REQUIRED_IMAGE_ORDER_CALLOUT} ».`,
           ],
         }),
       },

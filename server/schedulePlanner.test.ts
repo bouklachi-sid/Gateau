@@ -24,6 +24,6 @@ describe("planification automatique des créneaux", () => {
   it("sélectionne une offre pour le créneau promotionnel", () => {
     const offerSlot = { ...everyDayMorning, label: "Offre de midi", timeOfDay: "11:30", preferredContentTypes: ["offre"] };
     const plans = createDueSlotPublicationSpecs({ slots: [offerSlot], existingScheduledFor: [], products: [{ id: 12 }], offers: [{ id: 7 }], now: new Date("2026-08-24T10:31:00.000Z") });
-    expect(plans).toMatchObject([{ contentType: "offre", format: "text", productId: null, offerId: 7 }]);
+    expect(plans).toMatchObject([{ contentType: "offre", format: "image", productId: null, offerId: 7 }]);
   });
 });
